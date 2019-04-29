@@ -10,44 +10,41 @@ module load nlpl-mttools
 pre=./pre_europarl  # pre-processed files loc
 
 # Normalize and tokenize  all the data files (.norm and ,tok files)
-for f in train* val* test*
-do
-    echo "normalizing file: $f"
-    lang=$(echo $f | awk -F\- '{print $2}')
-    normalize-punctuation.perl -l $lang < $f > $pre/$f.norm
+# for f in train* val* test*
+# do
+#     echo "normalizing file: $f"
+#     lang=$(echo $f | awk -F\. '{print $2}')
+#     normalize-punctuation.perl -l $lang < $f > $pre/$f.norm
 
-    echo "tokenizing file $pre/$f.norm"
-    tokenizer.perl -l $lang < $pre/$f.norm > $pre/$f.tok
-done
+#     echo "tokenizing file $pre/$f.norm"
+#     tokenizer.perl -l $lang < $pre/$f.norm > $pre/$f.tok
+# done
 
 
-# Create a truecase model (.model files)
-for f in train*
-do
-    echo "creating a true casing model for file $f"
-    train-truecaser.perl --corpus $f --model $pre/$f.model
-done
+# # Create a truecase model (.model files)
+# for f in train*
+# do
+#     echo "creating a true casing model for file $f"
+#     train-truecaser.perl --corpus $f --model $pre/$f.model
+# done
 
 
 # Apply the truecasing models to all the tokenized data (.true files)
-for m in $pre/*.model
-do
-    echo ">> applying truecasing models to tokenised data using model: $m"
-    lang=$(echo $m | awk -F\. '{print $2}') # | awk -F\. '{print $1}')
-    for f in $pre/*$lang*.tok
-    do
-	echo "truecasing file: $f"
-	# part1=$(echo $f | awk -F\- '{print $1}' | awk -F\/ '{print $3}')
-	# part2=$(echo $f | awk -F\- '{print $2}' | awk -F\. '{print $2"."$3}')
-	# l=$(echo $f | awk -F\- '{print $2}' | awk -F\. '{print $1}')
-	truecase.perl --model $m  < $f > $pre/$f.true.$lang
-    done
-done
+# for m in $pre/*.model
+# do
+#     echo ">> applying truecasing models to tokenised data using model: $m"
+#     lang=$(echo $m | awk -F\. '{print $3}') # | awk -F\. '{print $1}')
+#     for f in $pre/*$lang*.tok
+#     do
+# 	echo "truecasing file: $f"
+# 	truecase.perl --model $m  < $f > $f.true.$lang
+#     done
+# done
 
 # Clean the files of empty lines
-for f in train*true val*true test*true
+for f in $pre/train*true $pre/val*true $pre/test*true
 do
-    clean-corpus-n.perl $pre/$f en sv $pre/clean/$f.clean 1 100
+    clean-corpus-n.perl $f en fi $f.clean 1 100
 done
 
 # Train a BPE Models
