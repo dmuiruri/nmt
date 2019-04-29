@@ -1,6 +1,10 @@
 # Ommit data files
+data/
 *.zip
 *.tgz
+*.tmx
+*.gz
+
 # ignore local notes
 notes.txt
  
