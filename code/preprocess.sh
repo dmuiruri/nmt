@@ -42,8 +42,12 @@ pre=./pre_europarl  # pre-processed files loc
 # done
 
 # Clean the files of empty lines
-for f in $pre/train*true $pre/val*true $pre/test*true
+
+# ToDo: this script expects file pairs are similar in name and only
+# differ at the extention which is a language code
+for f in $pre/train_europarl-v7.tok.true $pre/val_news2016.tok.true $pre/test_europarl-v7.tok.true
 do
+    echo ">> Cleaning file $f"
     clean-corpus-n.perl $f en fi $f.clean 1 100
 done
 
