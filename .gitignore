@@ -3,3 +3,6 @@
 *.tgz
 # ignore local notes
 notes.txt
+ 
+# Add ignore backup files
+*~
