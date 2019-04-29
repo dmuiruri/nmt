@@ -1,0 +1,5 @@
+# Ommit data files
+*.zip
+*.tgz
+# ignore local notes
+notes.txt
