@@ -13,7 +13,7 @@ pre=./pre_europarl  # pre-processed files loc
 for f in train* val* test*
 do
     echo "normalizing file: $f"
-    lang=$(echo $f | awk -F\- '{print$3}')
+    lang=$(echo $f | awk -F\- '{print $2}')
     normalize-punctuation.perl -l $lang < $f > $pre/$f.norm
 
     echo "tokenizing file $pre/$f.norm"
@@ -33,7 +33,7 @@ done
 for m in $pre/*.model
 do
     echo ">> applying truecasing models to tokenised data using model: $m"
-    lang=$(echo $m | awk -F\- '{print $4}') # | awk -F\. '{print $1}')
+    lang=$(echo $m | awk -F\. '{print $2}') # | awk -F\. '{print $1}')
     for f in $pre/*$lang*.tok
     do
 	echo "truecasing file: $f"
